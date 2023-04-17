@@ -1,6 +1,5 @@
 "use strict";
 const { Model } = require("sequelize");
-const language = require("./Language");
 module.exports = (sequelize, DataTypes) => {
   class job extends Model {
     static associate(models) {
