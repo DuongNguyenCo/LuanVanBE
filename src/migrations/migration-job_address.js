@@ -24,6 +24,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("fob_addresses");
+    await queryInterface.dropTable("job_addresses");
   },
 };
