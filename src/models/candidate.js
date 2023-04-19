@@ -3,7 +3,7 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class candidate extends Model {
     static associate(models) {
-      candidate.hasMany(models.cv, {});
+      candidate.hasMany(models.cv, { foreignKey: "id_candidate" });
       candidate.belongsToMany(models.business, {
         through: models.candi_busi,
         foreignKey: "id_candidate",

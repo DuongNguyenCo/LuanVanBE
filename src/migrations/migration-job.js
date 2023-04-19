@@ -41,6 +41,10 @@ module.exports = {
         type: Sequelize.DATE,
       },
     });
+    await queryInterface.addIndex("jobs", {
+      fields: [{ name: "name", length: 255 }],
+      type: "FULLTEXT",
+    });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable("jobs");

@@ -1,5 +1,5 @@
-import { raw } from "body-parser";
 import db from "../models/index";
+import { Op, Sequelize } from "sequelize";
 
 let getAll = () => {
   return new Promise(async (resolve, reject) => {
@@ -92,9 +92,43 @@ let postService = (post) => {
   });
 };
 
+let findJob = (content) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const data = await db.post.findAll({
+        attributes: ["id", "id_business", "id_job", "expire", "createdAt"],
+        include: [
+          {
+            model: db.business,
+            attributes: ["name", "url", "id"],
+          },
+          {
+            model: db.job,
+            attributes: ["id", "name", "salary"],
+            where:
+              content.name !== "" &&
+              Sequelize.literal(
+                `MATCH (job.name) AGAINST('${content.name}' IN NATURAL LANGUAGE MODE)`
+              ),
+            include: [
+              { model: db.language, attributes: ["name"] },
+              { model: db.address, attributes: ["city"] },
+            ],
+          },
+        ],
+        where: { expire: { [Op.gte]: new Date() } },
+        order: [["expire", "DESC"]],
+      });
+      resolve({ errCode: 0, errMessage: "findAll successfully", data });
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
 
 module.exports = {
   getAll,
   create,
   postService,
+  findJob,
 };

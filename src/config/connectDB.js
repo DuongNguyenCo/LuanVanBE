@@ -11,6 +11,12 @@ const sequelize = new Sequelize(
     logging: false,
   }
 );
+
+// const sequelize = new Sequelize("lvtn", "root", null, {
+//   host: "127.0.0.1",
+//   dialect: "mysql",
+//   logging: false,
+// });
 let connet = async () => {
   try {
     await sequelize.authenticate();

@@ -136,20 +136,26 @@ let getById = (id) => {
 let getByBusiness = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log("id: ", id);
       const data = await db.post.findAll({
         attributes: ["expire", "id"],
         include: [
           {
             model: db.job,
-            attributes: ["name"],
-            include: [{ model: db.address }],
+            attributes: ["name", "id"],
+            include: [
+              {
+                model: db.address,
+                attributes: ["street", "ward", "district", "city"],
+              },
+            ],
           },
-          { model: db.service },
+          { model: db.service, attributes: ["name"] },
+          { model: db.business, attributes: ["email"], where: { id: id } },
+          { model: db.cv },
         ],
         nest: true,
       });
-      resolve(data);
+      resolve({ errCode: 0, errMessage: "Find all data", data });
     } catch (err) {
       reject(err);
     }

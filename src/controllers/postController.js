@@ -15,8 +15,13 @@ let postService = async (req, res) => {
   res.status(200).json(data);
 };
 
+let findJob = async (req, res) => {
+  let data = await crudPost.findJob(req.query);
+  res.status(200).json(data);
+};
 module.exports = {
   getAll,
   create,
   postService,
+  findJob,
 };
